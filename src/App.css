@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+  }
+  
+  .filter-bar {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  input[type="text"] {
+    padding: 5px;
+    font-size: 16px;
+    border: 2px solid #EEB211;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #EEB211;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 4px;
+    border: 2px solid #EEB211;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #1C3C8C;
+    color: white;
+  }
+  
+  .modify-button {
+    background-color: #B31B1B;
+    border-color: #B31B1B;
+  }
+  
+  .delete-button {
+    background-color: #0C2340;
+    border-color: #0C2340;
+  }
+  .grandecito {
+    font-size: 48px;
+    font-weight: bold;
+  }
+
+  .selected {
+    background-color: #c0fce5; /* Color de fondo para la fila seleccionada */
+  }
+  .action-buttons-centered {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+    
+  
+/* ADD */
+
+#add-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#add-container h1 {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+#name-group,
+#address-group,
+#phone-group,
+#email-group {
+  margin-bottom: 15px;
+}
+
+#name-group label,
+#address-group label,
+#phone-group label,
+#email-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#name,
+#address,
+#phone,
+#email {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#botonPrimario {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#botonSecundario {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #B31B1B;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#add-title {
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: #1C3C8C;
+  padding: 10px;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* UPDATE */
+
+#update-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#update-container h1 {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#update-container .form-group {
+  margin-bottom: 10px;
+}
+
+#update-container label {
+  display: block;
+  font-weight: bold;
+}
+
+#update-container input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#update-container button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #EEB211;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#update-container button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #B31B1B;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+#update-title {
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: #1C3C8C;
+  padding: 10px;
+  color: #fff;
+  font-weight: bold;
+}
