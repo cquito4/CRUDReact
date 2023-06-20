@@ -26,6 +26,7 @@ function Home() {
       const response = await getUsers();
       const data = response.data || []; // Verificar que response.data.data no sea undefined
       setFilteredData(data);
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -43,35 +44,11 @@ function Home() {
     setActiveAction("agregar");
   }
 
-  async function addUser(userData) {
-    try {
-      const response = await createUser(userData);
-      const newUser = response.data.data;
-      setFilteredData([...filteredData, newUser]);
-      setActiveAction(null);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   function modificar(id) {
     const row = filteredData.find((item) => item.id === id);
     console.log(row);
     setSelectedRow(row);
     setActiveAction("modificar");
-  }
-
-  async function updateUserById(userId, userData) {
-    try {
-      await updateUser(userId, userData);
-      const updatedData = filteredData.map((item) =>
-        item.id === userId ? { ...item, ...userData } : item
-      );
-      setFilteredData(updatedData);
-      setActiveAction(null);
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   async function eliminar(id) {
@@ -87,6 +64,31 @@ function Home() {
   function selectRow(index) {
     setSelectedRow(filteredData[index]);
     setSelectedRowIndex(index);
+  }
+
+  async function addUser(userData) {
+    try {
+      const response = await createUser(userData);
+      const newUser = response.data.data;
+      setFilteredData((prevData) => [...prevData, newUser]);
+      setActiveAction(null);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+
+  async function updateUserById(userId, userData) {
+    try {
+      await updateUser(userId, userData);
+      const updatedData = filteredData.map((item) =>
+        item.id === userId ? { ...item, ...userData } : item
+      );
+      setFilteredData(updatedData);
+      setActiveAction(null);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
