@@ -1,22 +1,40 @@
-import React, { useState } from 'react';
-import Home from '../Home';
-import '../../App.css';
+import React, { useState } from "react";
+import Home from "../Home";
+import "../../App.css";
+import { updateUser } from "../../services/api";
 
-function Update({selectedRow}) {
+function Update({ selectedRow }) {
   const [showMain, setShowMain] = useState(false);
-  const [name, setName] = useState(selectedRow ? selectedRow.name : '');
-  const [address, setAddress] = useState(selectedRow ? selectedRow.address : '');
-  const [phone, setPhone] = useState(selectedRow ? selectedRow.phone : '');
-  const [email, setEmail] = useState(selectedRow ? selectedRow.email : '');
-
+  const [name, setName] = useState(selectedRow ? selectedRow.name : "");
+  const [address, setAddress] = useState(selectedRow ? selectedRow.address : "");
+  const [phone, setPhone] = useState(selectedRow ? selectedRow.phone : "");
+  const [email, setEmail] = useState(selectedRow ? selectedRow.email : "");
 
   function regresar() {
     setShowMain(true);
   }
 
-  function handleSubmit() {
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-    // Lógica para actualizar los datos en la base de datos
+    const userData = {
+      name,
+      address,
+      phone,
+      email,
+    };
+    try {
+      await updateUser(selectedRow.id, userData);
+      // Limpiar los campos después de agregar el usuario
+      setName("");
+      setAddress("");
+      setPhone("");
+      setEmail("");
+    } catch (error) {
+      console.error(error);
+      // Manejar el error de manera adecuada, como mostrar un mensaje de error al usuario
+    }
+    setShowMain(true);
   }
 
   return (
@@ -67,11 +85,14 @@ function Update({selectedRow}) {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <button type="submit" className="btn btn-primary">Actualizar</button>
-            <button onClick={regresar} className="btn btn-secondary">Regresar</button>
+            <button type="submit" className="btn btn-primary">
+              Actualizar
+            </button>
+            <button onClick={regresar} className="btn btn-secondary">
+              Regresar
+            </button>
           </form>
         </div>
-
       )}
     </div>
   );

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Add from "../Add";
-import Update from "../Update";
+import AddForm from "../Add/index";
+import UpdateForm from "../Update/index";
 import {
   getUsers,
   createUser,
   updateUser,
   deleteUser,
-} from "../../services/api"; // Importa las funciones del archivo api.js
-
+} from "../../services/api";
 import "../../App.css";
 
 function Home() {
@@ -24,9 +23,8 @@ function Home() {
   async function fetchData() {
     try {
       const response = await getUsers();
-      const data = response.data || []; // Verificar que response.data.data no sea undefined
+      const data = response.data ?? [];
       setFilteredData(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -36,26 +34,24 @@ function Home() {
     setFilter(event.target.value);
   }
 
-  function limpiar() {
+  function clearFilter() {
     setFilter("");
   }
 
-  function agregar() {
-    setActiveAction("agregar");
+  function addRecord() {
+    setActiveAction("add");
   }
 
-  function modificar(id) {
+  function editRecord(id) {
     const row = filteredData.find((item) => item.id === id);
-    console.log(row);
     setSelectedRow(row);
-    setActiveAction("modificar");
+    setActiveAction("edit");
   }
 
-  async function eliminar(id) {
+  async function deleteRecord(id) {
     try {
       await deleteUser(id);
-      const newData = filteredData.filter((item) => item.id !== id);
-      setFilteredData(newData);
+      fetchData(); // Actualizar los datos en la tabla llamando a fetchData
     } catch (error) {
       console.error(error);
     }
@@ -66,25 +62,10 @@ function Home() {
     setSelectedRowIndex(index);
   }
 
-  async function addUser(userData) {
-    try {
-      const response = await createUser(userData);
-      const newUser = response.data.data;
-      setFilteredData((prevData) => [...prevData, newUser]);
-      setActiveAction(null);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  
-
-  async function updateUserById(userId, userData) {
+  async function updateUserData(userId, userData) {
     try {
       await updateUser(userId, userData);
-      const updatedData = filteredData.map((item) =>
-        item.id === userId ? { ...item, ...userData } : item
-      );
-      setFilteredData(updatedData);
+      fetchData(); // Actualizar los datos en la tabla llamando a refreshData
       setActiveAction(null);
     } catch (error) {
       console.error(error);
@@ -93,10 +74,14 @@ function Home() {
 
   return (
     <div>
-      {activeAction === "agregar" ? (
-        <Add addUser={addUser} />
-      ) : activeAction === "modificar" ? (
-        <Update selectedRow={selectedRow} updateUser={updateUserById} />
+      {activeAction === "add" ? (
+        <AddForm />
+      ) : activeAction === "edit" ? (
+        <UpdateForm
+          selectedRow={selectedRow}
+          updateUser={updateUserData}
+          cancel={() => setActiveAction(null)}
+        />
       ) : (
         <div>
           <h1 className="grandecito">CRUD - Clientes</h1>
@@ -107,9 +92,9 @@ function Home() {
               onChange={handleFilterChange}
               placeholder="Filtrar por nombre"
             />
-            <button onClick={limpiar}>Limpiar</button>
+            <button onClick={clearFilter}>Limpiar</button>
           </div>
-          <button onClick={agregar}>Agregar</button>
+          <button onClick={addRecord}>Agregar</button>
           <table>
             <thead>
               <tr>
@@ -120,26 +105,35 @@ function Home() {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((item, index) => (
-                <tr
-                  key={index}
-                  className={selectedRowIndex === index ? "selected" : ""}
-                  onClick={() => selectRow(index)}
-                >
-                  <td>{item.name}</td>
-                  <td>{item.address}</td>
-                  <td>{item.phone}</td>
-                  <td>{item.email}</td>
+              {filteredData && filteredData.length === 0 ? (
+                <tr>
+                  <td colSpan="4">No se encontraron datos</td>
                 </tr>
-              ))}
+              ) : (
+                filteredData &&
+                filteredData.map((item, index) => (
+                  <tr
+                    key={item.id}
+                    className={selectedRowIndex === index ? "selected" : ""}
+                    onClick={() => selectRow(index)}
+                  >
+                    <td>{item.name}</td>
+                    <td>{item.address}</td>
+                    <td>{item.phone}</td>
+                    <td>{item.email}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
           {selectedRow && (
             <div className="action-buttons-centered">
-              <button onClick={() => modificar(selectedRow.id)}>
+              <button onClick={() => editRecord(selectedRow.id)}>
                 Modificar
               </button>
-              <button onClick={() => eliminar(selectedRow.id)}>Eliminar</button>
+              <button onClick={() => deleteRecord(selectedRow.id)}>
+                Eliminar
+              </button>
             </div>
           )}
         </div>

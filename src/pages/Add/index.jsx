@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import Home from "../Home";
 import "../../App.css";
+import { createUser } from "../../services/api";
 
-function Add({ addUser }) {
+function AddForm() {
   const [showMain, setShowMain] = useState(false);
-
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
@@ -12,6 +13,10 @@ function Add({ addUser }) {
 
   function handleNameChange(event) {
     setName(event.target.value);
+  }
+
+  function regresar() {
+    setShowMain(true);
   }
 
   function handleAddressChange(event) {
@@ -37,15 +42,16 @@ function Add({ addUser }) {
     };
 
     try {
-      await addUser(userData);
-      setShowMain(true); // Redirigir a Home después de agregar el usuario
+      await createUser(userData);
+      // Limpiar los campos después de agregar el usuario
+      setName("");
+      setAddress("");
+      setPhone("");
+      setEmail("");
     } catch (error) {
       console.error(error);
       // Manejar el error de manera adecuada, como mostrar un mensaje de error al usuario
     }
-  }
-
-  function regresar() {
     setShowMain(true);
   }
 
@@ -55,7 +61,7 @@ function Add({ addUser }) {
         <Home />
       ) : (
         <div className="container" id="add-container">
-          <h1 id="add-title">Pagina Add</h1>
+          <h1 id="add-title">Agregar Usuario</h1>
           <form onSubmit={handleSubmit}>
             <div className="form-group" id="name-group">
               <label htmlFor="name">Nombre:</label>
@@ -65,6 +71,7 @@ function Add({ addUser }) {
                 className="form-control"
                 value={name}
                 onChange={handleNameChange}
+                required
               />
             </div>
             <div className="form-group" id="address-group">
@@ -75,6 +82,7 @@ function Add({ addUser }) {
                 className="form-control"
                 value={address}
                 onChange={handleAddressChange}
+                required
               />
             </div>
             <div className="form-group" id="phone-group">
@@ -85,38 +93,42 @@ function Add({ addUser }) {
                 className="form-control"
                 value={phone}
                 onChange={handlePhoneChange}
+                required
               />
             </div>
             <div className="form-group" id="email-group">
               <label htmlFor="email">Correo electrónico:</label>
               <input
-                type="text"
+                type="email"
                 id="email"
                 className="form-control"
                 value={email}
                 onChange={handleEmailChange}
+                required
               />
             </div>
-            <button
-              id="botonPrimario"
-              type="submit"
-              className="btn btn-primary"
-            >
-              Agregar
-            </button>
+            <div className="form-buttons">
+              <button
+                id="botonPrimario"
+                type="submit"
+                className="btn btn-primary"
+              >
+                Agregar
+              </button>
+              <button
+                id="botonSecundario"
+                type="button"
+                className="btn btn-secondary"
+                onClick={regresar}
+              >
+                Cancelar
+              </button>
+            </div>
           </form>
-          <button
-            id="botonSecundario"
-            type="submit"
-            onClick={regresar}
-            className="btn btn-secondary"
-          >
-            Regresar
-          </button>
         </div>
       )}
     </div>
   );
 }
 
-export default Add;
+export default AddForm;
