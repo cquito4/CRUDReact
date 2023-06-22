@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import AddForm from "../Add/index";
 import UpdateForm from "../Update/index";
 import {
-  getUsers,
-  createUser,
+  getUsers,  
   updateUser,
   deleteUser,
 } from "../../services/api";
@@ -16,15 +15,19 @@ function Home() {
   const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
   const [filteredData, setFilteredData] = useState([]);
 
+
   useEffect(() => {
     fetchData();
-  }, []);
-
+  }, [filter]);
+  
   async function fetchData() {
-    try {
+    try {      
       const response = await getUsers();
       const data = response.data ?? [];
-      setFilteredData(data);
+      const filtered = data.filter((item) =>
+      item.name.toLowerCase().includes(filter.toLowerCase())
+    );
+      setFilteredData(filtered);
     } catch (error) {
       console.error(error);
     }
