@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:8000'; // Reemplaza con la URL base de tu API
+const API_BASE_URL = 'https://crudfastapi.onrender.com'; // Reemplaza con la URL base de tu API
 
 export const getUsers = () => {
   return axios.get(`${API_BASE_URL}/user`);
